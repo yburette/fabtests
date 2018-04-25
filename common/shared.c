@@ -2200,37 +2200,17 @@ int ft_sync()
 	int result;
 
 	if (opts.dst_addr) {
-		if (!opts.oob_port) {
-			ret = ft_tx(ep, remote_fi_addr, 1, &tx_ctx);
-			if (ret)
-				return ret;
+        ret = ft_tx(ep, remote_fi_addr, 1, &tx_ctx);
+        if (ret)
+            return ret;
 
-			ret = ft_rx(ep, 1);
-		} else {
-			ret = ft_sock_send(oob_sock, &tx_buf, 1);
-			if (ret)
-				return ret;
-
-			ret = ft_sock_recv(oob_sock, &result, 1);
-			if (ret)
-				return ret;
-		}
+        ret = ft_rx(ep, 1);
 	} else {
-		if (!opts.oob_port) {
-			ret = ft_rx(ep, 1);
-			if (ret)
-				return ret;
+        ret = ft_rx(ep, 1);
+        if (ret)
+            return ret;
 
-			ret = ft_tx(ep, remote_fi_addr, 1, &tx_ctx);
-		} else {
-			ret = ft_sock_recv(oob_sock, &result, 1);
-			if (ret)
-				return ret;
-
-			ret = ft_sock_send(oob_sock, &tx_buf, 1);
-			if (ret)
-				return ret;
-		}
+        ret = ft_tx(ep, remote_fi_addr, 1, &tx_ctx);
 	}
 
 	return ret;
